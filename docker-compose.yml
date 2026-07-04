@@ -1,0 +1,132 @@
+version: "3.8"
+
+networks:
+  redsim-labs:
+    driver: bridge
+
+services:
+
+  # ─── Web Exploitation Labs ─────────────────────────────────────────────────
+
+  juiceshop:
+    image: bkimminich/juice-shop
+    container_name: juiceshop
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - redsim-labs
+    labels:
+      redsim.lab: "true"
+      redsim.name: "OWASP Juice Shop"
+      redsim.category: "OWASP"
+      redsim.description: "Modern vulnerable web app covering OWASP Top 10"
+
+  dvwa:
+    image: vulnerables/web-dvwa
+    container_name: dvwa
+    restart: unless-stopped
+    ports:
+      - "3001:80"
+    networks:
+      - redsim-labs
+    labels:
+      redsim.lab: "true"
+      redsim.name: "DVWA"
+      redsim.category: "Web"
+      redsim.description: "Damn Vulnerable Web Application - beginner-friendly SQLi, XSS, CSRF"
+
+  webgoat:
+    image: webgoat/webgoat
+    container_name: webgoat
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    networks:
+      - redsim-labs
+    environment:
+      - WEBGOAT_HOST=0.0.0.0
+    labels:
+      redsim.lab: "true"
+      redsim.name: "WebGoat"
+      redsim.category: "OWASP"
+      redsim.description: "OWASP WebGoat - interactive Java EE security training"
+
+  bwapp:
+    image: raesene/bwapp
+    container_name: bwapp
+    restart: unless-stopped
+    ports:
+      - "3003:80"
+    networks:
+      - redsim-labs
+    labels:
+      redsim.lab: "true"
+      redsim.name: "bWAPP"
+      redsim.category: "Web"
+      redsim.description: "Buggy Web Application - 100+ web vulnerabilities"
+
+  #  mutillidae:
+  #    image: webpwnized/mutillidae
+  #    container_name: mutillidae
+  #    restart: unless-stopped
+  #    ports:
+  #      - "3004:80"
+  #    networks:
+  #      - redsim-labs
+  #    labels:
+  #      redsim.lab: "true"
+  #      redsim.name: "Mutillidae II"
+  #      redsim.category: "Web"
+  #      redsim.description: "OWASP Mutillidae II - free, intentionally vulnerable web app"
+
+  # ─── API & Node.js Exploitation Labs ──────────────────────────────────────
+
+  dvna:
+    image: appsecco/dvna
+    container_name: dvna
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    environment:
+      - MYSQL_USER=dvna
+      - MYSQL_DATABASE=dvna
+      - MYSQL_PASSWORD=passw0rd
+      - MYSQL_HOST=dvna-db
+      - MYSQL_PORT=3306
+    networks:
+      - redsim-labs
+    labels:
+      redsim.lab: "true"
+      redsim.name: "DVNA"
+      redsim.category: "API"
+      redsim.description: "Damn Vulnerable Node Application - Node.js security flaws"
+  #  nodegoat:
+  #    image: owasp/nodegoat
+  #    container_name: nodegoat
+  #    restart: unless-stopped
+  #    ports:
+  #      - "4000:4000"
+  #    networks:
+  #      - redsim-labs
+  #    labels:
+  #      redsim.lab: "true"
+  #      redsim.name: "NodeGoat"
+  #      redsim.category: "API"
+  #      redsim.description: "OWASP NodeGoat - OWASP Top 10 in Node.js"
+
+  # ─── Network / Multi-Exploit Labs ─────────────────────────────────────────
+
+  #  hackazon:
+  #    image: mutzel/hackazon
+  #    container_name: hackazon
+  #    restart: unless-stopped
+  #    ports:
+  #      - "3005:80"
+  #    networks:
+  #      - redsim-labs
+  #    labels:
+  #      redsim.lab: "true"
+  #      redsim.name: "Hackazon"
+  #      redsim.category: "Network"
+  #      redsim.description: "Vulnerable e-commerce site with realistic attack vectors"
